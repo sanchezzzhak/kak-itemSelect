@@ -1,5 +1,5 @@
 {
-    "name": "kak/itemSelect",
+    "name": "kak/itemselect",
     "description": "itemSelect widgets for Yii2",
     "type": "library",
     "keywords": ["yii2","itemSelect yii2","kak itemSelect"],
@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "kak\\widgets\\itemSelect\\": ""
+            "kak\\widgets\\itemselect\\": ""
         }
     }
 }
