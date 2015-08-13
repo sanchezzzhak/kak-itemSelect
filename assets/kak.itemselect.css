@@ -1,0 +1,15 @@
+.itemselect-list-from , .itemselect-list-to {
+    overflow: auto;
+    max-height: 250px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.btnTo {
+    margin-top: 10px;
+}
+.itemselect-item {
+    padding: 5px 10px;
+}
+.itemselect-select {
+    background: #E7E7E7;
+}

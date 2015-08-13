@@ -1,20 +1,40 @@
-<div class="row">
-    <div class="col-xs-12 col-md-5">
-        <div class="itemselect-list-from" style="border:1px solid; padding-top:10px">
+<?php
+    use yii\helpers\Html;
 
+    /** @var $this \yii\web\View */
+    /** @var $context \kak\widgets\itemselect\ItemSelect */
+    $context = $this->context
+?>
+<?=Html::beginTag('script',['id' => 'itemselect-' . $context->options['id'], 'type' => 'text/x-tmpl']); ?>
+    <?=$context->templateItem?>
+<?=Html::endTag('script'); ?>
+
+<?=Html::beginTag('div',$context->options);?>
+    <div class="col-xs-12 col-md-5">
+        <?=(empty($context->labelFrom)) ? '': Html::label($context->labelFrom)?>
+        <div class="itemselect-list-from">
+            <?=$context->renderList($context::DIRECTION_FROM) ?>
         </div>
     </div>
     <div class="col-xs-12 col-md-2 text-center">
-        <div class="form-group ">
-            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></button>
+        <div class="form-group">
+            <button type="button" class="btn btn-default btnTo">
+                <i class="hidden-xs hidden-sm glyphicon glyphicon-chevron-left"></i>
+                <i class="visible-xs visible-sm glyphicon glyphicon-chevron-up"></i>
+            </button>
         </div>
         <div class="form-group">
-            <button  type="button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></button>
+            <button type="button" class="btn btn-default btnFrom">
+                <i class="hidden-xs hidden-sm glyphicon glyphicon-chevron-right"></i>
+                <i class="visible-xs visible-sm glyphicon glyphicon-chevron-down"></i>
+            </button>
         </div>
     </div>
     <div class="col-xs-12 col-md-5">
-        <div class="itemselect-list-to" style="border:1px solid;  padding-top:10px">
-
+        <?=(empty($context->labelTo)) ? '': Html::label($context->labelTo)?>
+        <div class="itemselect-list-to">
+            <?=$context->renderList($context::DIRECTION_TO) ?>
         </div>
     </div>
-</div>
+
+<?=Html::endTag('div')?>
