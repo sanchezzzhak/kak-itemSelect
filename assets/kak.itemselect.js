@@ -113,9 +113,11 @@
         moveItems: function (items,direction) {
             var _this = this;
             $.each(items, function(k,i){
-                var item  = $(i).detach();
-                _this.inputHidden(item,direction);
-                item.appendTo(direction ? _this.fromList: _this.toList )
+                if(!$(i).is('.hide')) {
+                    var item  = $(i).detach();
+                    _this.inputHidden(item,direction);
+                    item.appendTo(direction ? _this.fromList: _this.toList )
+                }
             });
         }
     };
