@@ -12,6 +12,9 @@
 <?=Html::beginTag('div',$context->options);?>
     <div class="col-xs-12 col-md-5">
         <?=(empty($context->labelFrom)) ? '': Html::label($context->labelFrom)?>
+        <?php if($context->searchFilter):?>
+            <div class="itemselect-input-search" data-search=".itemselect-list-from"><?=Html::input('text','','',$context->searchFilterOptions)?></div>
+        <?php endif;?>
         <div class="itemselect-list-from">
             <?=$context->renderList($context::DIRECTION_FROM) ?>
         </div>
@@ -32,6 +35,9 @@
     </div>
     <div class="col-xs-12 col-md-5">
         <?=(empty($context->labelTo)) ? '': Html::label($context->labelTo)?>
+        <?php if($context->searchFilter):?>
+            <div class="itemselect-input-search" data-search=".itemselect-list-to"><?=Html::input('text','','',$context->searchFilterOptions)?></div>
+        <?php endif;?>
         <div class="itemselect-list-to">
             <?=$context->renderList($context::DIRECTION_TO) ?>
         </div>

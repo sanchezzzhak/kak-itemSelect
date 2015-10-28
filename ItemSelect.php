@@ -16,6 +16,10 @@ class ItemSelect extends \yii\widgets\InputWidget
 
     public $itemAttributeId = 'id';
 
+    public $searchFilter = true;
+    public $searchFilterOptions = [
+        'class' => 'form-control'
+    ];
 
     /** @var string template item */
     public $templateItem = '<div>{%=o.name%}</div>';
@@ -28,6 +32,7 @@ class ItemSelect extends \yii\widgets\InputWidget
 
         $this->options['id'] =  $this->getId();
         $this->options['data-inputname'] =  $this->getHiddenInputName();
+        $this->options['data-search-filter'] =  $this->searchFilter;
     }
 
     /**
