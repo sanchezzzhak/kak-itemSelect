@@ -18,7 +18,7 @@ class ItemSelect extends \yii\widgets\InputWidget
 
     public $searchFilter = true;
     public $searchFilterOptions = [
-        'class' => 'form-control'
+        'placeholder' => 'search item',
     ];
 
     /** @var string template item */
@@ -29,6 +29,7 @@ class ItemSelect extends \yii\widgets\InputWidget
         parent::init();
 
         Html::addCssClass($this->options,'row');
+        Html::addCssClass($this->searchFilterOptions,'form-control');
 
         $this->options['id'] =  $this->getId();
         $this->options['data-inputname'] =  $this->getHiddenInputName();
@@ -43,7 +44,6 @@ class ItemSelect extends \yii\widgets\InputWidget
         $this->options['id'] = $this->getId();
         $this->registerAssets();
         $this->getView()->registerJs("jQuery('#{$this->options['id']}').kakItemSelect()");
-
         return $this->render('view-itemselect');
     }
 
