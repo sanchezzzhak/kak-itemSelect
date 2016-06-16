@@ -5,9 +5,6 @@
     /** @var $context \kak\widgets\itemselect\ItemSelect */
     $context = $this->context
 ?>
-<?=Html::beginTag('script',['id' => 'itemselect-' . $context->options['id'], 'type' => 'text/x-tmpl']); ?>
-    <?=$context->templateItem?>
-<?=Html::endTag('script'); ?>
 
 <?=Html::beginTag('div',$context->options);?>
     <div class="col-xs-12 col-md-5">
