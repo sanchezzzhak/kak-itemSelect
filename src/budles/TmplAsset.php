@@ -1,5 +1,5 @@
 <?php
-namespace kak\widgets\itemselect;
+namespace kak\widgets\itemselect\budles;
 
 use yii\web\AssetBundle;
 
