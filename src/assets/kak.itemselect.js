@@ -21,7 +21,11 @@
     toList: '.itemselect-list-to',
     item: '.itemselect-item',
     select: '.itemselect-select',
-    search: '.itemselect-input-search'
+    search: '.itemselect-input-search',
+    selectAllTo: '.select-all-to',
+    selectAllFrom: '.select-all-from',
+    unselectAllTo: '.unselect-all-to',
+    unselectAllFrom: '.unselect-all-from'
   };
 
   // **********************************
@@ -39,29 +43,55 @@
     this.fromList = this.el.find(domSelectors.fromList);
     this.toList = this.el.find(domSelectors.toList);
 
-
+    // move select items fromlist to tolist
     this.el.find(domSelectors.btnFrom).off().on('click', $.proxy(function (e) {
       this.moveItems(this.fromList.find(domSelectors.select), false)
     }, this));
-
+    // move select items tolist to fromlist
     this.el.find(domSelectors.btnTo).off().on('click', $.proxy(function (e) {
       this.moveItems(this.toList.find(domSelectors.select), true)
     }, this));
-
+    // select all from list
+    this.el.find(domSelectors.selectAllFrom).off().on('click', $.proxy(function (e) {
+      var className = String(domSelectors.select).substring(1);
+      this.fromList.find(domSelectors.item).each(function (i, el) {
+        $(el).addClass(className);
+      });
+    }, this));
+    // unselect all from list
+    this.el.find(domSelectors.unselectAllFrom).off().on('click', $.proxy(function (e) {
+      var className = String(domSelectors.select).substring(1);
+      this.fromList.find(domSelectors.item).each(function (i, el) {
+        $(el).removeClass(className);
+      });
+    }, this));
+   // select all to list
+    this.el.find(domSelectors.selectAllTo).off().on('click', $.proxy(function (e) {
+      var className = String(domSelectors.select).substring(1);
+      this.toList.find(domSelectors.item).each(function (i, el) {
+        $(el).addClass(className);
+      });
+    }, this));
+    // unselect all to list
+    this.el.find(domSelectors.unselectAllTo).off().on('click', $.proxy(function (e) {
+      var className = String(domSelectors.select).substring(1);
+      this.toList.find(domSelectors.item).each(function (i, el) {
+        $(el).removeClass(className);
+      });
+    }, this));
+    // select item
     this.el.find(domSelectors.item).off().on('click', $.proxy(function (e) {
       var move = this.el.data('moveClick');
       var elm = $(e.currentTarget);
-      if(move){
+      if (move) {
         var select = elm.closest(domSelectors.toList).length > 0;
         this.moveItems([elm], select)
-      }else{
-        elm.toggleClass('itemselect-select');
+      } else {
+        elm.toggleClass(String(domSelectors.select).substring(1));
       }
     }, this));
-
-
+    // search item
     this.el.find(domSelectors.search).on('keydown', function (ev) {
-
       if ((ev.keyCode || ev.which) === 13) {
         ev.preventDefault();
         return false;
@@ -104,7 +134,8 @@
 
     },
     inputHidden: function (item, direction) {
-      item.removeClass('itemselect-select');
+      var className = String(domSelectors.select).substring(1);
+      item.removeClass(className);
       item.find('input[name="' + this.el.data('inputname') + '"]').remove();
 
       if (!direction) {

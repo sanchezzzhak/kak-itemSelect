@@ -13,11 +13,12 @@ class ItemSelect extends \yii\widgets\InputWidget
     public $items = [];
     public $labelFrom;
     public $labelTo;
+    public $labelUnselectAll = 'Unselect all';
     public $labelSelectAll = 'Select all';
     /**
      * @var string
      */
-    public $itemAttribute = 'id';
+    public $itemAttributeId = 'id';
 
     /**
      * @var array the HTML attributes for the container of the rendering result of each data item.
@@ -128,7 +129,7 @@ class ItemSelect extends \yii\widgets\InputWidget
         $result = [];
         foreach ($this->items as $index => $item) {
 
-            $value = ArrayHelper::getValue($item, $this->itemAttribute, []);
+            $value = ArrayHelper::getValue($item, $this->itemAttributeId, []);
             if ($select == static::SELECT_FROM && in_array($value, $values)) {
                 continue;
             }
