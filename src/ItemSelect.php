@@ -4,6 +4,7 @@ namespace kak\widgets\itemselect;
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\StringHelper;
 
 class ItemSelect extends \yii\widgets\InputWidget
 {
@@ -108,11 +109,10 @@ class ItemSelect extends \yii\widgets\InputWidget
         }, $clip);
         return preg_replace('#\{\%\=o(.*)\%\}#ism', '', $clip);
     }
-
     public function getHiddenInputName()
     {
         return $this->hasModel()
-            ? sprintf('%s[%s][]', basename(get_class($this->model)), $this->attribute)
+            ? sprintf('%s[%s][]', StringHelper::basename(get_class($this->model)), $this->attribute)
             : $this->name;
     }
 
