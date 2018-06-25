@@ -59,7 +59,6 @@
     }, this));
     // move select items tolist to fromlist
     this.el.find(domSelectors.btnTo).off().on('click', $.proxy(function (e) {
-      var direction = elm.closest(domSelectors.toList).length > 0;
       this.moveItems(this.toList.find(domSelectors.select), true);
     }, this));
 
