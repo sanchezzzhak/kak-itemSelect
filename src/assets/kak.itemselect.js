@@ -31,6 +31,13 @@
     itemToContainer: '.itemselect-to-container'
   };
 
+  var events = {
+    EVENT_SELECT_ITEM: 'itemselect:select',
+    EVENT_UNSELECT_ITEM: 'itemselect:unselect',
+    EVENT_MOVE_ITEM: 'itemselect:moveitem'
+  };
+
+
   // **********************************
   // Constructor
   // **********************************
@@ -52,49 +59,58 @@
     }, this));
     // move select items tolist to fromlist
     this.el.find(domSelectors.btnTo).off().on('click', $.proxy(function (e) {
+      var direction = elm.closest(domSelectors.toList).length > 0;
       this.moveItems(this.toList.find(domSelectors.select), true);
     }, this));
+
     // select all from list
     this.el.find(domSelectors.selectAllFrom).off().on('click', $.proxy(function (e) {
+      var _this = this;
       var className = String(domSelectors.select).substring(1);
       this.fromList.find(domSelectors.item).each(function (i, el) {
-        $(el).addClass(className);
+        !$(el).hasClass(className) ? _this.selectItem($(el), false): null;
       });
       this.hintItemsUpdate();
     }, this));
     // unselect all from list
     this.el.find(domSelectors.unselectAllFrom).off().on('click', $.proxy(function (e) {
+      var _this = this;
       var className = String(domSelectors.select).substring(1);
       this.fromList.find(domSelectors.item).each(function (i, el) {
-        $(el).removeClass(className);
+        $(el).hasClass(className) ? _this.unselectItem($(el), false): null;
       });
       this.hintItemsUpdate();
     }, this));
-   // select all to list
+
+    // select all to list
     this.el.find(domSelectors.selectAllTo).off().on('click', $.proxy(function (e) {
+      var _this = this;
       var className = String(domSelectors.select).substring(1);
       this.toList.find(domSelectors.item).each(function (i, el) {
-        $(el).addClass(className);
+        !$(el).hasClass(className) ? _this.selectItem($(el), true): null;
       });
       this.hintItemsUpdate();
     }, this));
     // unselect all to list
     this.el.find(domSelectors.unselectAllTo).off().on('click', $.proxy(function (e) {
+      var _this = this;
       var className = String(domSelectors.select).substring(1);
       this.toList.find(domSelectors.item).each(function (i, el) {
-        $(el).removeClass(className);
+        $(el).hasClass(className) ? _this.unselectItem($(el), true): null;
       });
       this.hintItemsUpdate();
     }, this));
     // select item
     this.el.find(domSelectors.item).off().on('click', $.proxy(function (e) {
-      var move = this.el.data('moveClick');
       var elm = $(e.currentTarget);
+      var direction = elm.closest(domSelectors.toList).length > 0;
+      var move = this.el.data('moveClick');
       if (move) {
-        var select = elm.closest(domSelectors.toList).length > 0;
-        this.moveItems([elm], select)
+        this.moveItems([elm], direction)
       } else {
-        elm.toggleClass(String(domSelectors.select).substring(1));
+        elm.hasClass(String(domSelectors.select).substring(1))
+            ? this.unselectItem(elm, direction)
+            : this.selectItem(elm, direction);
       }
       this.hintItemsUpdate();
     }, this));
@@ -109,7 +125,6 @@
     this.el.find(domSelectors.search).on('keyup click search input paste blur', $.proxy(function (e) {
       var input = $(e.target);
       var q = input.val();
-
       this.searchItems(q, input.parent().data('search'));
     }, this));
 
@@ -136,12 +151,24 @@
         $(selector).find(domSelectors.item).removeClass('hide');
         return;
       }
-
       $.each($(selector).find(domSelectors.item), function (i, o) {
         var match = $("*:contains-ci('" + q + "')", this);
         (match.length > 0) ? $(this).removeClass('hide') : $(this).addClass('hide');
       });
-
+    },
+    unselectItem: function (item, direction) {
+      var className = String(domSelectors.select).substring(1);
+      item.removeClass(className);
+      item.trigger(events.EVENT_UNSELECT_ITEM, {
+        direction: direction
+      })
+    },
+    selectItem: function (item, direction) {
+      var className = String(domSelectors.select).substring(1);
+      item.addClass(className);
+      item.trigger(events.EVENT_SELECT_ITEM, {
+        direction: direction
+      });
     },
     inputHidden: function (item, direction) {
       var className = String(domSelectors.select).substring(1);
@@ -154,7 +181,7 @@
       }
     },
     hintItemsUpdate: function () {
-      if(!this.el.data('selectHint')){
+      if (!this.el.data('selectHint')) {
         return;
       }
       var dataToCount = this.el.find(domSelectors.toList).find(domSelectors.item).length;
@@ -176,11 +203,17 @@
           var item = $(i).detach();
           _this.inputHidden(item, direction);
           item.appendTo(direction ? _this.fromList : _this.toList)
+
+          item.trigger(events.EVENT_MOVE_ITEM, {
+            direction: direction
+          });
+
         }
       });
       this.hintItemsUpdate();
     },
-  };
+  }
+  ;
 
   $.fn.kakItemSelect = function (option) {
     var options = typeof option == 'object' && option;
@@ -189,4 +222,5 @@
   };
   $.fn.kakItemSelect.Constructor = kakItemSelect;
 
-}));
+}))
+;

@@ -5,22 +5,55 @@ namespace kak\widgets\itemselect;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
+use yii\web\JsExpression;
 
 class ItemSelect extends \yii\widgets\InputWidget
 {
+    const JS_KEY = 'kak/itemselect/';
+
     const SELECT_FROM = 0;
     const SELECT_TO = 1;
 
+    /**
+     * event js result(elm, direction 0|1)
+     */
+    const EVENT_SELECT_ITEM = 'itemselect:select';
+    /**
+     * event js result(elm, direction 0|1)
+     */
+    const EVENT_UNSELECT_ITEM = 'itemselect:unselect';
+    /**
+     * event js result(elm, direction 0|1)
+     */
+    const EVENT_MOVE_ITEM = 'itemselect:moveitem';
+    /**
+     * @var array items list select
+     */
     public $items = [];
+    /**
+     * @var string
+     */
     public $labelFrom;
+    /**
+     * @var string
+     */
     public $labelTo;
+    /**
+     * @var string
+     */
     public $labelUnselectAll = 'Unselect all';
+    /**
+     * @var string
+     */
     public $labelSelectAll = 'Select all';
+    /**
+     * @var array events list
+     */
+    public $events = [];
     /**
      * @var string
      */
     public $itemAttributeId = 'id';
-
     /**
      * @var array the HTML attributes for the container of the rendering result of each data item.
      * The "tag" element specifies the tag name of the container element and defaults to "div".
@@ -98,6 +131,7 @@ class ItemSelect extends \yii\widgets\InputWidget
     public function run()
     {
         $this->registerAssets();
+        $this->registerEvents();
         return $this->render($this->templateForm);
     }
 
@@ -174,5 +208,38 @@ class ItemSelect extends \yii\widgets\InputWidget
 
         $views->registerJs(sprintf("jQuery('#%s').kakItemSelect()", $this->options['id']));
     }
+
+    /**
+     * Register events.
+     */
+    protected function registerEvents()
+    {
+        $view = $this->getView();
+        $selector = '#' . $this->options['id'];
+        if (count($this->events) > 0) {
+            $js = [];
+            foreach ($this->events as $event => $callback) {
+                if (is_array($callback)) {
+                    foreach ($callback as $function) {
+                        if (!$function instanceof JsExpression) {
+                            $function = new JsExpression($function);
+                        }
+                        $js[] = sprintf("jQuery('%s').on('%s', %s);", $selector, $event, $function);
+                    }
+                } else {
+                    if (!$callback instanceof JsExpression) {
+                        $callback = new JsExpression($callback);
+                    }
+                    $js[] = sprintf("jQuery('%s').on('%s', %s);", $selector, $event, $callback);
+                }
+            }
+            if (count($js) > 0) {
+                $js = implode("\n", $js);
+                $view->registerJs($js, $view::POS_READY, self::JS_KEY .'events/'. $this->options['id']);
+            }
+        }
+    }
+
+
 
 }

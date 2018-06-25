@@ -32,7 +32,7 @@ usage data model
 ]);?>
 
 ```
-usage data array
+usage data array + events
 ```php
 <?=ItemSelect::widget([
     'itemAttributeId' => 'id',
@@ -46,7 +46,20 @@ usage data array
         ['id' => 5 , 'name' => 'Foo5', 'flag_url' => '' ],
         ['id' => 6 , 'name' => 'Foo6', 'flag_url' => '' ],
     ],
-    'templateItem' => '<div><img src="{%=o.flag_url%}">{%=o.name%}</div>'
+    'templateItem' => '<div><img src="{%=o.flag_url%}">{%=o.name%}</div>',
+     'events' => [
+        ItemSelect::EVENT_SELECT_ITEM => new yii\web\JsExpression("function(item, direction){
+            $(item.target).css('background', 'lawngreen');
+            console.log($(item.target).text(), direction);
+        }"),
+        ItemSelect::EVENT_UNSELECT_ITEM => new yii\web\JsExpression("function(item, direction){
+            $(item.target).css('background', '');
+            console.log($(item.target).text(), direction);
+        }"),
+        ItemSelect::EVENT_MOVE_ITEM => new yii\web\JsExpression("function(item, direction){
+            console.log($(item.target).text(), direction);
+        }"),
+    ],
    
 ]);?>
 ```
