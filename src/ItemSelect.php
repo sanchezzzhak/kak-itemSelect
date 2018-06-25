@@ -58,6 +58,11 @@ class ItemSelect extends \yii\widgets\InputWidget
      * show/hidden search filter
      */
     public $searchFilter = true;
+    /**
+     * @var bool
+     * show/hidden hint select items
+     */
+    public $selectHint = false;
 
     /**
      * @var bool move item by click
@@ -82,6 +87,7 @@ class ItemSelect extends \yii\widgets\InputWidget
         Html::addCssClass($this->itemOptions, 'itemselect-item');
         $this->options['data-inputname'] = $this->getHiddenInputName();
         $this->options['data-search-filter'] = $this->searchFilter ? 1 : 0;
+        $this->options['data-select-hint'] = $this->selectHint ? 1 : 0;
         $this->options['data-move-click'] = $this->moveItemClick ? 1 : 0;
         parent::init();
     }

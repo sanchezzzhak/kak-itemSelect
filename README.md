@@ -12,6 +12,7 @@ property widget
 * $viewItem null|string|closure
 * $viewParams array;
 * $searchFilter bool
+* $selectHint bool
 * $searchFilterOptions array
 * $templateItem string
 

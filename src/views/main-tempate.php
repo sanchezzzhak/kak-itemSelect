@@ -6,18 +6,24 @@ use yii\helpers\Html;
 $context = $this->context
 ?>
 <?= Html::beginTag('div', $context->options); ?>
-    <div class="col-xs-12 col-md-5">
+    <div class="col-xs-12 col-md-5 itemselect-from-container">
         <?= (empty($context->labelFrom)) ? '' : Html::label($context->labelFrom) ?>
         <?php if ($context->searchFilter): ?>
             <div class="itemselect-input-search" data-search=".itemselect-list-from">
                 <?= Html::input('text', '', '', $context->searchFilterOptions) ?>
             </div>
         <?php endif; ?>
-        <div>
-            <div class="text-right">
-                <a href="javascript:;" class="select-all-from"><?=$context->labelSelectAll?></a>
-                &nbsp;
-                <a href="javascript:;" class="unselect-all-from"><?=$context->labelUnselectAll?></a>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="text-left">
+                    <span class="itemselect-hint-container"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="text-right">
+                    <a href="javascript:;" class="select-all-from"><?=$context->labelSelectAll?></a>
+                    <a href="javascript:;" class="unselect-all-from"><?=$context->labelUnselectAll?></a>
+                </div>
             </div>
         </div>
         <div class="itemselect-list-from">
@@ -38,18 +44,24 @@ $context = $this->context
             </button>
         </div>
     </div>
-    <div class="col-xs-12 col-md-5">
+    <div class="col-xs-12 col-md-5 itemselect-to-container">
         <?= (empty($context->labelTo)) ? '' : Html::label($context->labelTo) ?>
         <?php if ($context->searchFilter): ?>
             <div class="itemselect-input-search" data-search=".itemselect-list-to">
                 <?= Html::input('text', '', '', $context->searchFilterOptions) ?>
             </div>
         <?php endif; ?>
-        <div>
-            <div class="text-right">
-                <a href="javascript:;" class="select-all-to"><?=$context->labelSelectAll?></a>
-                &nbsp;
-                <a href="javascript:;" class="unselect-all-to"><?=$context->labelUnselectAll?></a>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="text-left">
+                    <span class="itemselect-hint-container"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="text-right">
+                    <a href="javascript:;" class="select-all-to"><?=$context->labelSelectAll?></a>
+                    <a href="javascript:;" class="unselect-all-to"><?=$context->labelUnselectAll?></a>
+                </div>
             </div>
         </div>
         <div class="itemselect-list-to">

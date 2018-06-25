@@ -25,7 +25,10 @@
     selectAllTo: '.select-all-to',
     selectAllFrom: '.select-all-from',
     unselectAllTo: '.unselect-all-to',
-    unselectAllFrom: '.unselect-all-from'
+    unselectAllFrom: '.unselect-all-from',
+    itemHintContainer: '.itemselect-hint-container',
+    itemFromContainer: '.itemselect-from-container',
+    itemToContainer: '.itemselect-to-container'
   };
 
   // **********************************
@@ -45,11 +48,11 @@
 
     // move select items fromlist to tolist
     this.el.find(domSelectors.btnFrom).off().on('click', $.proxy(function (e) {
-      this.moveItems(this.fromList.find(domSelectors.select), false)
+      this.moveItems(this.fromList.find(domSelectors.select), false);
     }, this));
     // move select items tolist to fromlist
     this.el.find(domSelectors.btnTo).off().on('click', $.proxy(function (e) {
-      this.moveItems(this.toList.find(domSelectors.select), true)
+      this.moveItems(this.toList.find(domSelectors.select), true);
     }, this));
     // select all from list
     this.el.find(domSelectors.selectAllFrom).off().on('click', $.proxy(function (e) {
@@ -57,6 +60,7 @@
       this.fromList.find(domSelectors.item).each(function (i, el) {
         $(el).addClass(className);
       });
+      this.hintItemsUpdate();
     }, this));
     // unselect all from list
     this.el.find(domSelectors.unselectAllFrom).off().on('click', $.proxy(function (e) {
@@ -64,6 +68,7 @@
       this.fromList.find(domSelectors.item).each(function (i, el) {
         $(el).removeClass(className);
       });
+      this.hintItemsUpdate();
     }, this));
    // select all to list
     this.el.find(domSelectors.selectAllTo).off().on('click', $.proxy(function (e) {
@@ -71,6 +76,7 @@
       this.toList.find(domSelectors.item).each(function (i, el) {
         $(el).addClass(className);
       });
+      this.hintItemsUpdate();
     }, this));
     // unselect all to list
     this.el.find(domSelectors.unselectAllTo).off().on('click', $.proxy(function (e) {
@@ -78,6 +84,7 @@
       this.toList.find(domSelectors.item).each(function (i, el) {
         $(el).removeClass(className);
       });
+      this.hintItemsUpdate();
     }, this));
     // select item
     this.el.find(domSelectors.item).off().on('click', $.proxy(function (e) {
@@ -89,6 +96,7 @@
       } else {
         elm.toggleClass(String(domSelectors.select).substring(1));
       }
+      this.hintItemsUpdate();
     }, this));
     // search item
     this.el.find(domSelectors.search).on('keydown', function (ev) {
@@ -117,6 +125,8 @@
         helper: 'original'
     }).disableSelection();
     */
+
+    this.hintItemsUpdate();
   };
 
   kakItemSelect.prototype = {
@@ -143,6 +153,22 @@
         item.append(input);
       }
     },
+    hintItemsUpdate: function () {
+      if(!this.el.data('selectHint')){
+        return;
+      }
+      var dataToCount = this.el.find(domSelectors.toList).find(domSelectors.item).length;
+      var dataFromCount = this.el.find(domSelectors.fromList).find(domSelectors.item).length;
+
+      var dataToSelectCount = this.el.find(domSelectors.toList).find(domSelectors.select).length;
+      var dataFromSelectCount = this.el.find(domSelectors.fromList).find(domSelectors.select).length;
+
+      var textTo = dataToSelectCount + ' / ' + dataToCount;
+      var textFrom = dataFromSelectCount + ' / ' + dataFromCount;
+
+      this.el.find(domSelectors.itemToContainer).find(domSelectors.itemHintContainer).text(textTo);
+      this.el.find(domSelectors.itemFromContainer).find(domSelectors.itemHintContainer).text(textFrom);
+    },
     moveItems: function (items, direction) {
       var _this = this;
       $.each(items, function (k, i) {
@@ -152,7 +178,8 @@
           item.appendTo(direction ? _this.fromList : _this.toList)
         }
       });
-    }
+      this.hintItemsUpdate();
+    },
   };
 
   $.fn.kakItemSelect = function (option) {
