@@ -26,7 +26,7 @@ usage data model
 ?>
 ...
 <?=$form->field($model, 'geo_list')->widget(ItemSelect::class,[
-    'itemAttribute' => 'id',
+    'itemAttributeId' => 'id',
     'items' => $countries,
     'templateItem' => '<div><img src="{%=o.flag_url%}">{%=o.name%}</div>'
 ]);?>
@@ -66,9 +66,9 @@ usage data array + events
 usage item view 
 ```php
 <?=ItemSelect::widget([
-    'itemAttribute' => 'id',
+    'itemAttributeId' => 'id',
     'name' => 'ItemSelect[]',
-    'value' => [3,5,7],        // select items by itemAttribute
+    'value' => [3,5,7],        // select items by itemAttributeId
     'items' => [
         ['id' => 1 , 'name' => 'Foo1', 'flag_url' => '' ],
         ['id' => 2 , 'name' => 'Foo2', 'flag_url' => '' ],
@@ -84,9 +84,9 @@ usage item view
 usage item view function
 ```php
 <?=ItemSelect::widget([
-    'itemAttribute' => 'id',
+    'itemAttributeId' => 'id',
     'name' => 'ItemSelect[]',
-    'value' => [ 1,2,3,4,5],        // select items by itemAttribute
+    'value' => [ 1,2,3,4,5],        // select items by itemAttributeId
     'items' => [
         ['id' => 1 , 'name' => 'Foo1', 'flag_url' => '' ],
         ['id' => 2 , 'name' => 'Foo2', 'flag_url' => '' ],
@@ -116,7 +116,7 @@ usage from ActiveForm
 ?>
 ...
 <?=$form->field($model, 'subject_ids')->widget(ItemSelect::class, [
-    'itemAttribute' => 'id',
+    'itemAttributeId' => 'id',
     'items' => $servics,
     'viewItem' => function($item, $index, $select, $widget){
  
